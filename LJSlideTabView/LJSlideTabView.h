@@ -55,7 +55,7 @@
 @end
 
 @protocol  LJSlideTabViewDataSource <NSObject>
-
+@required
 -(UIView *)slideTabView:(LJSlideTabView *)slideTabView viewAtTabIndex:(NSInteger) tabIndex;
 
 

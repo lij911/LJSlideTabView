@@ -8,29 +8,23 @@
 
 #import "LJSlideTabView.h"
 
-/* TabView 的高度*/
-static const CGFloat kTabViewHeightDefault = 30.0;
-/* 滑动指示器 SlideView 的占整个 Tab 的比例 */
-static const float kSlideViewScale = 0.3;
-/* 滑动指示器 SlideView 的高度 */
-static const CGFloat kSlideViewHeightDefault = 2.5;
+///* TabView 的高度*/
+//static const CGFloat kTabViewHeightDefault = 30.0;
+///* 滑动指示器 SlideView 的占整个 Tab 的比例 */
+//static const float kSlideViewScale = 0.3;
+///* 滑动指示器 SlideView 的高度 */
+//static const CGFloat kSlideViewHeightDefault = 2.5;
+//
+//struct {
+//    
+//    unsigned int slideTabViewDidRightSlipAtFirstPage : 1;
+//    unsigned int slideTabViewDidLeftSlipAtLastPage : 1;
+//    
+//    unsigned int willShowDisplayView : 1;
+//    unsigned int didShowingDisplayView : 1;
+//    
+//} _delegateFlags;
 
-struct {
-    
-    unsigned int slideTabViewDidRightSlipAtFirstPage : 1;
-    unsigned int slideTabViewDidLeftSlipAtLastPage : 1;
-    
-    unsigned int willShowDisplayView : 1;
-    unsigned int didShowingDisplayView : 1;
-
-} _delegateFlags;
-
-struct {
-    
-    unsigned int needLayoutTabItems : 1;
-    unsigned int needLayoutDisplayView : 1;
-    
-} _layoutFlags;
 
 @interface LJSlideTabView()<UIScrollViewDelegate>
 
@@ -73,6 +67,7 @@ struct {
         _slideViewColor = [UIColor colorWithRed:239/256.0 green:154/256.0 blue:66/256.0 alpha:1];
         _tabItemColorDefault = [UIColor colorWithRed:153/256.0 green:153/256.0 blue:153/256.0 alpha:1];
         _tabItemColorHightlight = [UIColor colorWithRed:12/256.0 green:78/256.0 blue:159/256.0 alpha:1];
+        //        [self setupView];
     }
     return self;
 }
@@ -88,68 +83,56 @@ struct {
     if (_tabViewHeight <= 0 || _tabViewHeight > _myFrame.size.height) {
         _tabViewHeight = kTabViewHeightDefault;
     }
-    CGFloat width = _myFrame.size.width / _tabCount;
     
-    _slideView.backgroundColor = _slideViewColor;
-    _slideView.frame = CGRectMake(width * (_currentTabIndex + (1 - _slideViewScale) / 2), _tabViewHeight - _slideViewHeight, width * _slideViewScale, _slideViewHeight);
-    _tabScrollView.frame = CGRectMake(0, 0, _myFrame.size.width, _tabViewHeight);
+    //    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     [self addSubview:self.mainScrollView];
     [self addSubview:self.tabScrollView];
     [_tabScrollView addSubview:self.slideView];
-    if (!_tabItems) {
-        [self setupTabItems];
-    } else if(_layoutFlags.needLayoutTabItems){
-        [self layoutTabItems];
-    }
-    
+    [self setupTabItems];
     [self setupDisplayViewAtTabIndex:_currentTabIndex];
-    if (_layoutFlags.needLayoutDisplayView) {
-        [self layoutDisplayView];
-    }
-    
     
 }
 
 -(void)setupTabItems{
-    _tabItems = [NSMutableArray array];
-    CGFloat width = _myFrame.size.width / _tabCount;
-    
-    for (int i = 0; i < _tabCount; i++) {
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, _tabViewHeight)];
-        btn.tag = i;
-        btn.titleLabel.font = _tabItemFont;
-        btn.userInteractionEnabled = YES;
-        if (_tabItemTitles) {
-            [btn setTitle:_tabItemTitles[i] forState:UIControlStateNormal];
-        } else {
-            [btn setTitle:@"Button" forState:UIControlStateNormal];
+    if (!_tabItems) {
+        _tabItems = [NSMutableArray array];
+        CGFloat width = _myFrame.size.width / _tabCount;
+        
+        for (int i = 0; i < _tabCount; i++) {
+            UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, _tabViewHeight)];
+            btn.tag = i;
+            btn.titleLabel.font = _tabItemFont;
+            btn.userInteractionEnabled = YES;
+            if (_tabItemTitles) {
+                [btn setTitle:_tabItemTitles[i] forState:UIControlStateNormal];
+            } else {
+                [btn setTitle:@"Button" forState:UIControlStateNormal];
+            }
+            if (i == _currentTabIndex) {
+                [btn setTitleColor:_tabItemColorHightlight forState:UIControlStateNormal];
+            }else{
+                [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
+            }
+            [btn addTarget:self action:@selector(switchTabView:) forControlEvents:UIControlEventTouchUpInside];
+            [_tabItems addObject:btn];
+            [_tabScrollView addSubview:btn];
         }
-        if (i == _currentTabIndex) {
-            [btn setTitleColor:_tabItemColorHightlight forState:UIControlStateNormal];
-        }else{
-            [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
-        }
-        [btn addTarget:self action:@selector(switchTabView:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabItems addObject:btn];
-        [_tabScrollView addSubview:btn];
+    } else{
+        [_tabItems enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            UIButton *btn = obj;
+            CGRect frame = btn.frame;
+            frame.size.height = _tabViewHeight;
+            btn.frame = frame;
+            btn.titleLabel.font = _tabItemFont;
+            [btn setTitle:_tabItemTitles[idx] forState:UIControlStateNormal];
+            if (idx == _currentTabIndex) {
+                [btn setTitleColor:_tabItemColorHightlight forState:UIControlStateNormal];
+            }else{
+                [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
+            }
+        }];
     }
-}
-
--(void)layoutTabItems{
-    [_tabItems enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        UIButton *btn = obj;
-        CGRect frame = btn.frame;
-        frame.size.height = _tabViewHeight;
-        btn.frame = frame;
-        btn.titleLabel.font = _tabItemFont;
-        [btn setTitle:_tabItemTitles[idx] forState:UIControlStateNormal];
-        if (idx == _currentTabIndex) {
-            [btn setTitleColor:_tabItemColorHightlight forState:UIControlStateNormal];
-        }else{
-            [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
-        }
-    }];
 }
 
 -(void)setupDisplayViewAtTabIndex:(NSInteger) tabIndex{
@@ -160,20 +143,10 @@ struct {
         displayView.tag = tabIndex;
         [self.mainScrollView addSubview:displayView];
         [_disPlayViews setObject:displayView forKey:@(tabIndex)];
-        if (_delegateFlags.didShowingDisplayView) {
-            [_delegate slideTabView:self didShowingDisplayView:displayView];
-        }
+        [_delegate slideTabView:self didShowingDisplayView:displayView];
     } else {
-        if (_delegateFlags.didShowingDisplayView) {
-            [_delegate slideTabView:self didShowingDisplayView:[_disPlayViews objectForKey:@(tabIndex)]];
-        }
+        [_delegate slideTabView:self didShowingDisplayView:[_disPlayViews objectForKey:@(tabIndex)]];
     }
-}
--(void)layoutDisplayView{
-    [_disPlayViews enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        UIView *displayView = obj;
-        displayView.frame = CGRectMake([key integerValue] * _myFrame.size.width, _tabViewHeight, _myFrame.size.width, _myFrame.size.height - _tabViewHeight);
-    }];
 }
 
 #pragma mark -
@@ -225,13 +198,13 @@ struct {
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//    NSLog(@"%f",scrollView.contentOffset.y);
+    //    NSLog(@"%f",scrollView.contentOffset.y);
     if(_currentTabIndex == 0 && scrollView.contentOffset.x < -_myFrame.size.width * 0.2){
         if (_delegateFlags.slideTabViewDidRightSlipAtFirstPage) {
             [_delegate slideTabViewDidRightSlipAtFirstPage];
         }
     }
-
+    
     if (_currentTabIndex == (_tabCount - 1) && scrollView.contentOffset.x > _myFrame.size.width * 0.2) {
         if (_delegateFlags.slideTabViewDidLeftSlipAtLastPage) {
             [_delegate slideTabViewDidLeftSlipAtLastPage];
@@ -256,27 +229,62 @@ struct {
 -(void)setCurrentTabIndex:(NSInteger)currentTabIndex{
     [self switchTabWithNextTabIndex:currentTabIndex];
 }
--(void)setTabItemTitles:(NSArray *)tabItemTitles{
-    NSParameterAssert([tabItemTitles count] == _tabCount);
-    _tabItemTitles = tabItemTitles;
-    _layoutFlags.needLayoutTabItems = true;
+
+-(void)setSlideViewColor:(UIColor *)slideViewColor{
+    _slideViewColor = slideViewColor;
+    if (_slideView) {
+        self.slideView.backgroundColor = slideViewColor;
+    }
 }
--(void)setTabItemColorHightlight:(UIColor *)tabItemColorHightlight{
-    _tabItemColorHightlight = tabItemColorHightlight;
-    _layoutFlags.needLayoutTabItems = true;
+
+-(void)setSlideViewHeight:(CGFloat)slideViewHeight{
+    _slideViewHeight = slideViewHeight;
+    if (_slideView) {
+        CGFloat width = _myFrame.size.width / _tabCount;
+        _slideView.frame = CGRectMake(width * (_currentTabIndex + (1 - _slideViewScale)/2), _tabViewHeight - _slideViewHeight, width * _slideViewScale, _slideViewHeight);
+    }
 }
--(void)setTabItemColorDefault:(UIColor *)tabItemColorDefault{
-    _tabItemColorHightlight = tabItemColorDefault;
-    _layoutFlags.needLayoutTabItems = true;
-}
--(void)setTabItemFont:(UIFont *)tabItemFont{
-    _tabItemFont = tabItemFont;
-    _layoutFlags.needLayoutTabItems = true;
+-(void)setSlideViewScale:(float)slideViewScale{
+    _slideViewScale = slideViewScale;
+    if (_slideView) {
+        CGFloat width = _myFrame.size.width / _tabCount;
+        _slideView.frame = CGRectMake(width * (_currentTabIndex + (1 - _slideViewScale)/2), _tabViewHeight - _slideViewHeight, width * _slideViewScale, _slideViewHeight);
+    }
 }
 -(void)setTabViewHeight:(CGFloat)tabViewHeight{
     _tabViewHeight = tabViewHeight;
-    _layoutFlags.needLayoutDisplayView = true;
+    if (_tabScrollView) {
+        _tabScrollView.frame = CGRectMake(0, 0, _myFrame.size.width, _tabViewHeight);
+        
+        [self setupTabItems];
+    }
 }
+-(void)setTabItemFont:(UIFont *)tabItemFont{
+    _tabItemFont = tabItemFont;
+    if (_tabItems) {
+        [self setupTabItems];
+    }
+}
+-(void)setTabItemColorDefault:(UIColor *)tabItemColorDefault{
+    _tabItemColorDefault = tabItemColorDefault;
+    if (_tabItems) {
+        [self setupTabItems];
+    }
+}
+-(void)setTabItemColorHightlight:(UIColor *)tabItemColorHightlight{
+    _tabItemColorHightlight = tabItemColorHightlight;
+    if (_tabItems) {
+        [self setupTabItems];
+    }
+}
+-(void)setTabItemTitles:(NSArray *)tabItemTitles{
+    NSParameterAssert([tabItemTitles count] == _tabCount);
+    _tabItemTitles = tabItemTitles;
+    if (_tabItems) {
+        [self setupTabItems];
+    }
+}
+
 #pragma mark - lazy init
 
 -(UIScrollView *)mainScrollView{
@@ -318,7 +326,6 @@ struct {
     return _tabScrollView;
 }
 
-
-
 @end
+
 

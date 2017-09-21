@@ -21,8 +21,20 @@
     _slideTabView.dataSource = self;
     _slideTabView.tabItemTitles = @[@"1",@"2",@"3",@"4"];
     [self.view addSubview:_slideTabView];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
+    btn.frame = CGRectMake(100, 100, 100, 30);
+    [btn setTitle:@"change" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(click) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
 }
-
+-(void)click{
+    _slideTabView.tabViewHeight = 80;
+    _slideTabView.tabItemFont = [UIFont systemFontOfSize:16];
+    _slideTabView.slideViewColor = [UIColor grayColor];
+    _slideTabView.tabItemTitles = @[@"133",@"233",@"333",@"433"];
+    [_slideTabView setNeedsDisplay];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
