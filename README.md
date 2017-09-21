@@ -56,3 +56,23 @@
 @property(nonatomic, assign)CGFloat slideViewHeight;
 @property(nonatomic, strong)UIColor *slideViewColor;
 ···
+* 可以实现的 Delegate
+```
+@protocol LJSlideTabViewDelegate <NSObject>
+@optional
+/**
+ 在第一页向右滑动，常用与响应 pop 事件
+ */
+-(void)slideTabViewDidRightSlipAtFirstPage;
+
+/**
+ 在最后一页向左滑动，怎么使用就任由您想象了
+ */
+-(void)slideTabViewDidLeftSlipAtLastPage;
+
+
+-(void)slideTabView:(LJSlideTabView *)slideTabView willShowDisplayView:(NSInteger) tabIndex;
+-(void)slideTabView:(LJSlideTabView *)slideTabView didShowingDisplayView:(UIView *) displayView;
+
+@end
+```
