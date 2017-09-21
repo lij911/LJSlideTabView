@@ -55,8 +55,9 @@
 @property(nonatomic, assign)float slideViewScale;
 @property(nonatomic, assign)CGFloat slideViewHeight;
 @property(nonatomic, strong)UIColor *slideViewColor;
-···
+```
 * 可以实现的 Delegate
+
 ```
 @protocol LJSlideTabViewDelegate <NSObject>
 @optional
