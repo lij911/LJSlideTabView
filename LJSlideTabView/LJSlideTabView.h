@@ -16,15 +16,22 @@
 
 @property(nonatomic, assign)NSInteger currentTabIndex;
 
-@property(nonatomic, assign)float slideViewScale;
-@property(nonatomic, assign)CGFloat slideViewHeight;
-@property(nonatomic, strong)UIColor *slideViewColor;
 
+
+/* 顶部的 TabView 的高度 */
 @property(nonatomic, assign)CGFloat tabViewHeight;
+
+/* 顶部的 TabView 里每个 Item 的属性 */
 @property(nonatomic, strong)UIColor *tabItemColorDefault;
 @property(nonatomic, strong)UIColor *tabItemColorHightlight;
 @property(nonatomic, strong)UIFont *tabItemFont;
 @property(nonatomic, strong)NSArray *tabItemTitles;
+
+/* tabView 中被选中的的 Item 下放的那个指示器的属性 */
+@property(nonatomic, assign)float slideViewScale;
+@property(nonatomic, assign)CGFloat slideViewHeight;
+@property(nonatomic, strong)UIColor *slideViewColor;
+
 
 @property(nonatomic, weak)id<LJSlideTabViewDelegate> delegate;
 @property(nonatomic, weak)id<LJSlideTabViewDataSource> dataSource;

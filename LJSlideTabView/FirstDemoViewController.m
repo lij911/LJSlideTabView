@@ -19,14 +19,13 @@
     _slideTabView = [[LJSlideTabView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64) andTabCount:4];
     _slideTabView.delegate = self;
     _slideTabView.dataSource = self;
-    _slideTabView.tabItemTitles = @[@"1",@"2",@"3",@"4"];
     [self.view addSubview:_slideTabView];
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
     btn.frame = CGRectMake(100, 100, 100, 30);
     [btn setTitle:@"relayout" forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(relayout) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn];
+//    [self.view addSubview:btn];
 }
 -(void)relayout{
     _slideTabView.tabViewHeight = 80;
@@ -54,7 +53,6 @@
         [scrollView addSubview:label2];
         scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 1000);
         return scrollView;
-        
     } else {
         UIView *view = [UIView new];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 100, 200, 20)];
