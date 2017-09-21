@@ -24,11 +24,11 @@
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
     btn.frame = CGRectMake(100, 100, 100, 30);
-    [btn setTitle:@"change" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(click) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitle:@"relayout" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(relayout) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
 }
--(void)click{
+-(void)relayout{
     _slideTabView.tabViewHeight = 80;
     _slideTabView.tabItemFont = [UIFont systemFontOfSize:16];
     _slideTabView.slideViewColor = [UIColor grayColor];
