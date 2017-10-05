@@ -8,8 +8,9 @@
 
 #import "FirstDemoViewController.h"
 #import "LJSlideTabView.h"
-@interface FirstDemoViewController ()<LJSlideTabViewDelegate, LJSlideTabViewDataSource>
-@property(nonatomic, strong)LJSlideTabView *slideTabView;
+
+@interface FirstDemoViewController () <LJSlideTabViewDelegate, LJSlideTabViewDataSource>
+@property(nonatomic, strong) LJSlideTabView *slideTabView;
 @end
 
 @implementation FirstDemoViewController
@@ -20,35 +21,40 @@
     _slideTabView.delegate = self;
     _slideTabView.dataSource = self;
     [self.view addSubview:_slideTabView];
-    
+
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
     btn.frame = CGRectMake(100, 100, 100, 30);
     [btn setTitle:@"relayout" forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(relayout) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:btn];
+    [self.view addSubview:btn];
 }
--(void)relayout{
-    _slideTabView.tabViewHeight = 80;
+
+- (void)relayout {
+    _slideTabView.tabViewHeight = 40;
     _slideTabView.tabItemFont = [UIFont systemFontOfSize:16];
     _slideTabView.slideViewColor = [UIColor grayColor];
-    _slideTabView.tabItemTitles = @[@"133",@"233",@"333",@"433"];
+    _slideTabView.tabItemTitles = @[@"133", @"233", @"333", @"433"];
+    _slideTabView.slideViewScale = 1.0;
+    //在设置好之后调用 setNeedsDisplay 触发drawRect: 方法
     [_slideTabView setNeedsDisplay];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - SlideTabView DataSource
--(UIView *)slideTabView:(LJSlideTabView *)slideTabView viewAtTabIndex:(NSInteger)tabIndex{
+
+- (UIView *)slideTabView:(LJSlideTabView *)slideTabView viewAtTabIndex:(NSInteger)tabIndex {
     if (tabIndex == 0) {
         UIScrollView *scrollView = [UIScrollView new];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 100, 100, 20)];
         label.text = @"first page";
-        
+
         UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(100, 700, 100, 20)];
         label2.text = @"first page";
-        
+
         [scrollView addSubview:label];
         [scrollView addSubview:label2];
         scrollView.contentSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 1000);
@@ -56,22 +62,23 @@
     } else {
         UIView *view = [UIView new];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 100, 200, 20)];
-        label.text = [NSString stringWithFormat:@"page index is :%li",(long)tabIndex];
+        label.text = [NSString stringWithFormat:@"page index is :%li", (long) tabIndex];
         [view addSubview:label];
         return view;
     }
 }
 
 #pragma mark - SlideTabView Delegate
--(void)slideTabViewDidRightSlipAtFirstPage{
+
+- (void)slideTabViewDidRightSlipAtFirstPage {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)slideTabView:(LJSlideTabView *)slideTabView didShowingDisplayView:(UIView *)displayView{
+- (void)slideTabView:(LJSlideTabView *)slideTabView didShowingDisplayView:(UIView *)displayView {
     NSLog(@"这里可以用来关掉菊花，或对 view 操作");
 }
 
--(void)slideTabView:(LJSlideTabView *)slideTabView willShowDisplayView:(NSInteger)tabIndex{
+- (void)slideTabView:(LJSlideTabView *)slideTabView willShowDisplayView:(NSInteger)tabIndex {
     NSLog(@"这里可以用来转起菊花");
 }
 
