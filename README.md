@@ -39,3 +39,41 @@
 }
 ```
 
+
+* 可以修改的属性
+```
+/* 顶部的 TabView 的高度 */
+@property(nonatomic, assign)CGFloat tabViewHeight;
+
+/* 顶部的 TabView 里每个 Item 的属性 */
+@property(nonatomic, strong)UIColor *tabItemColorDefault;
+@property(nonatomic, strong)UIColor *tabItemColorHightlight;
+@property(nonatomic, strong)UIFont *tabItemFont;
+@property(nonatomic, strong)NSArray *tabItemTitles;
+
+/* tabView 中被选中的的 Item 下放的那个指示器的属性 */
+@property(nonatomic, assign)float slideViewScale;
+@property(nonatomic, assign)CGFloat slideViewHeight;
+@property(nonatomic, strong)UIColor *slideViewColor;
+```
+* 可以实现的 Delegate
+
+```
+@protocol LJSlideTabViewDelegate <NSObject>
+@optional
+/**
+ 在第一页向右滑动，常用与响应 pop 事件
+ */
+-(void)slideTabViewDidRightSlipAtFirstPage;
+
+/**
+ 在最后一页向左滑动，怎么使用就任由您想象了
+ */
+-(void)slideTabViewDidLeftSlipAtLastPage;
+
+
+-(void)slideTabView:(LJSlideTabView *)slideTabView willShowDisplayView:(NSInteger) tabIndex;
+-(void)slideTabView:(LJSlideTabView *)slideTabView didShowingDisplayView:(UIView *) displayView;
+
+@end
+```
