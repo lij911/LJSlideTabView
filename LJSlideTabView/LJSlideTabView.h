@@ -1,6 +1,6 @@
 //
-//  LJSildeTabView.h
-//  SideView_objc
+//  LJSlideTabView.h
+//  LJSlideTabView
 //
 //  Created by 李敬 on 2017/9/18.
 //  Copyright © 2017年 李敬. All rights reserved.

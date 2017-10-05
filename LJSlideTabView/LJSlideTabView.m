@@ -1,6 +1,6 @@
 //
-//  LJSildeTabView.m
-//  SideView_objc
+//  LJSlideTabView.m
+//  LJSlideTabView
 //
 //  Created by 李敬 on 2017/9/18.
 //  Copyright © 2017年 李敬. All rights reserved.
@@ -182,6 +182,7 @@ struct {
 
 #pragma mark -
 
+
 - (void)switchTabWithNextTabIndex:(NSInteger)nextTabIndex {
 
     if (nextTabIndex != _currentTabIndex) {
@@ -192,22 +193,18 @@ struct {
 
         [self setupDisplayViewAtTabIndex:nextTabIndex];
 
-        CGRect frame = _slideView.frame;
-        CGFloat width = _myFrame.size.width / _tabCount;
-        frame.origin.x = width * (nextTabIndex + (1 - _slideViewScale) / 2);
-        [UIView animateWithDuration:0.2L animations:^{
-            _slideView.frame = frame;
-        }                completion:^(BOOL finished) {
-            UIButton *btn = _tabItems[_currentTabIndex];
-            [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
-            btn = _tabItems[nextTabIndex];
-            [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
-            _currentTabIndex = nextTabIndex;
-        }];
+        UIButton *btn = _tabItems[_currentTabIndex];
+        [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
+        btn = _tabItems[nextTabIndex];
+        [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
+        _currentTabIndex = nextTabIndex;
 
     }
 
 }
+
+#pragma mark - Sync ScrollView
+
 
 #pragma mark - Action Response
 
@@ -227,17 +224,18 @@ struct {
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSInteger nextTabIndex = _mainScrollView.contentOffset.x / _myFrame.size.width;
     [self switchTabWithNextTabIndex:nextTabIndex];
+
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    NSLog(@"%f",scrollView.contentOffset.y);
+    CGRect frame = _slideView.frame;
+    frame.origin.x = (scrollView.contentOffset.x / _tabCount) + (_myFrame.size.width / _tabCount) * (1 - _slideViewScale) / 2;
+    _slideView.frame = frame;
     if (_currentTabIndex == 0 && scrollView.contentOffset.x < -_myFrame.size.width * 0.2) {
         if (_delegateFlags.slideTabViewDidRightSlipAtFirstPage) {
             [_delegate slideTabViewDidRightSlipAtFirstPage];
         }
-    }
-
-    if (_currentTabIndex == (_tabCount - 1) && scrollView.contentOffset.x > _myFrame.size.width * 0.2) {
+    } else if (_currentTabIndex == (_tabCount - 1) && scrollView.contentOffset.x > _myFrame.size.width * 0.2) {
         if (_delegateFlags.slideTabViewDidLeftSlipAtLastPage) {
             [_delegate slideTabViewDidLeftSlipAtLastPage];
         }
@@ -248,10 +246,10 @@ struct {
 
 - (void)setDelegate:(id)delegate {
     _delegate = delegate;
-    _delegateFlags.slideTabViewDidRightSlipAtFirstPage = [delegate respondsToSelector:@selector(slideTabViewDidRightSlipAtFirstPage)];
-    _delegateFlags.slideTabViewDidLeftSlipAtLastPage = [delegate respondsToSelector:@selector(slideTabViewDidLeftSlipAtLastPage)];
-    _delegateFlags.willShowDisplayView = [delegate respondsToSelector:@selector(slideTabView:willShowDisplayView:)];
-    _delegateFlags.didShowingDisplayView = [delegate respondsToSelector:@selector(slideTabView:didShowingDisplayView:)];
+    _delegateFlags.slideTabViewDidRightSlipAtFirstPage = (unsigned int) [delegate respondsToSelector:@selector(slideTabViewDidRightSlipAtFirstPage)];
+    _delegateFlags.slideTabViewDidLeftSlipAtLastPage = (unsigned int) [delegate respondsToSelector:@selector(slideTabViewDidLeftSlipAtLastPage)];
+    _delegateFlags.willShowDisplayView = (unsigned int) [delegate respondsToSelector:@selector(slideTabView:willShowDisplayView:)];
+    _delegateFlags.didShowingDisplayView = (unsigned int) [delegate respondsToSelector:@selector(slideTabView:didShowingDisplayView:)];
 
 }
 
@@ -269,10 +267,11 @@ struct {
     _layoutFlags.needLayoutTabItems = true;
 }
 
--(void)setTabItemColorHighlight:(UIColor *)tabItemColorHighlight {
+- (void)setTabItemColorHighlight:(UIColor *)tabItemColorHighlight {
     _tabItemColorHighlight = tabItemColorHighlight;
     _layoutFlags.needLayoutTabItems = true;
 }
+
 - (void)setTabItemColorDefault:(UIColor *)tabItemColorDefault {
     _tabItemColorDefault = tabItemColorDefault;
     _layoutFlags.needLayoutTabItems = true;
