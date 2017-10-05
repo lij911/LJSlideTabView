@@ -8,7 +8,10 @@
 
 #import "LJSlideTabView.h"
 
-/* TabView 的高度*/
+static const short kTabCountDefault = 2;
+static const short kDisplayTabCountDefault = 5;
+
+/* 默认 TabView 的高度*/
 static const CGFloat kTabViewHeightDefault = 30.0;
 /* 滑动指示器 SlideView 的占整个 Tab 的比例 */
 static const float kSlideViewScale = 0.3;
@@ -46,6 +49,7 @@ struct {
 
 @property(nonatomic, strong) UIView *slideView;
 
+
 @end
 
 @implementation LJSlideTabView
@@ -55,14 +59,24 @@ struct {
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    return [self initWithFrame:frame andTabCount:2];
+    return [self initWithFrame:frame andTabCount:kTabCountDefault];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame andTabCount:(NSInteger)tabCount {
+    if(tabCount <= kDisplayTabCountDefault){
+        return [self initWithFrame:frame TabCount:tabCount displayTabCount:tabCount];
+    } else{
+        return [self initWithFrame:frame TabCount:tabCount displayTabCount:kDisplayTabCountDefault];
+    }
+}
+
+- (instancetype)initWithFrame:(CGRect)frame TabCount:(NSInteger)tabCount displayTabCount:(NSInteger)displayTabCount{
+    NSAssert(tabCount >= displayTabCount, @"illegal parameters!");
     self = [super initWithFrame:frame];
     if (self) {
         _myFrame = frame;
         _tabCount = tabCount;
+        _displayTabCount = displayTabCount;
         _currentTabIndex = 0;
         _tabViewHeight = kTabViewHeightDefault;
         _slideViewScale = kSlideViewScale;
@@ -76,10 +90,11 @@ struct {
     return self;
 }
 
+
 #pragma mark - layout
 
 - (void)setupView {
-    NSAssert(_tabCount >= 2 && _tabCount < 6, @"ilegal count!");
+//    NSAssert(_tabCount >= 2 && _tabCount < 6, @"ilegal count!");
 
     if (_currentTabIndex < 0 || _currentTabIndex >= _tabCount) {
         _currentTabIndex = 0;
@@ -88,7 +103,7 @@ struct {
     if (_tabViewHeight <= 0 || _tabViewHeight > _myFrame.size.height) {
         _tabViewHeight = kTabViewHeightDefault;
     }
-    CGFloat width = _myFrame.size.width / _tabCount;
+    CGFloat width = _myFrame.size.width / _displayTabCount;
 
     [self addSubview:self.mainScrollView];
     [self addSubview:self.tabScrollView];
@@ -116,7 +131,7 @@ struct {
 
 - (void)setupTabItems {
     _tabItems = [NSMutableArray array];
-    CGFloat width = _myFrame.size.width / _tabCount;
+    CGFloat width = _myFrame.size.width / MIN(_tabCount, _displayTabCount);
 
     for (NSUInteger i = 0; i < _tabCount; i++) {
         UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, _tabViewHeight)];
@@ -197,6 +212,31 @@ struct {
         [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
         btn = _tabItems[nextTabIndex];
         [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
+
+        [UIView animateWithDuration:0.2L animations:^{
+            CGFloat width = _myFrame.size.width / _displayTabCount;
+            NSInteger baseNum = _tabScrollView.contentOffset.x / width;
+            if (nextTabIndex <= baseNum){
+                baseNum = nextTabIndex;
+                if (baseNum > 0){
+                    baseNum--;
+                }
+                _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
+                CGPoint center = _slideView.center;
+                center.x = btn.center.x;
+                _slideView.center = center;
+            } else if (baseNum + _displayTabCount - 1 <= nextTabIndex){
+                baseNum = nextTabIndex - _displayTabCount + 1;
+                if(baseNum + _displayTabCount < _tabCount){
+                    baseNum++;
+                }
+                _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
+                CGPoint center = _slideView.center;
+                center.x = btn.center.x;
+                _slideView.center = center;
+            }
+        }];
+
         _currentTabIndex = nextTabIndex;
 
     }
@@ -229,7 +269,7 @@ struct {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGRect frame = _slideView.frame;
-    frame.origin.x = (scrollView.contentOffset.x / _tabCount) + (_myFrame.size.width / _tabCount) * (1 - _slideViewScale) / 2;
+    frame.origin.x = (scrollView.contentOffset.x / _displayTabCount) + (_myFrame.size.width / _displayTabCount) * (1 - _slideViewScale) / 2;
     _slideView.frame = frame;
     if (_currentTabIndex == 0 && scrollView.contentOffset.x < -_myFrame.size.width * 0.2) {
         if (_delegateFlags.slideTabViewDidRightSlipAtFirstPage) {
@@ -305,7 +345,7 @@ struct {
 
 - (UIView *)slideView {
     if (!_slideView) {
-        CGFloat width = _myFrame.size.width / _tabCount;
+        CGFloat width = _myFrame.size.width / _displayTabCount;
         _slideView = [[UIView alloc] initWithFrame:CGRectMake(width * (_currentTabIndex + (1 - _slideViewScale) / 2), _tabViewHeight - _slideViewHeight, width * _slideViewScale, _slideViewHeight)];
         _slideView.backgroundColor = _slideViewColor;
     }
@@ -314,7 +354,7 @@ struct {
 
 - (UIScrollView *)tabScrollView {
     if (!_tabScrollView) {
-        CGFloat width = _myFrame.size.width / _tabCount;
+        CGFloat width = _myFrame.size.width / _displayTabCount;
 
         _tabScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, _myFrame.size.width, _tabViewHeight)];
         _tabScrollView.contentSize = CGSizeMake(width * _tabCount, _tabViewHeight);

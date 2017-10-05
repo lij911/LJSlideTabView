@@ -12,8 +12,10 @@
 @protocol LJSlideTabViewDelegate, LJSlideTabViewDataSource;
 
 @interface LJSlideTabView : UIView
-
+/*  TabItem 的数量  */
 @property(nonatomic, assign, readonly) NSInteger tabCount;
+/* 页面同时展示的 tabItem 的数量 */
+@property(nonatomic, assign, readonly) NSInteger displayTabCount;
 
 @property(nonatomic, assign) NSInteger currentTabIndex;
 
@@ -27,7 +29,7 @@
 @property(nonatomic, strong) UIFont *tabItemFont;
 @property(nonatomic, strong) NSArray *tabItemTitles;
 
-/* tabView 中被选中的的 Item 下放的那个指示器的属性 */
+/* tabView 中被选中的 Item 下放的那个指示器的属性 */
 @property(nonatomic, assign) float slideViewScale;
 @property(nonatomic, assign) CGFloat slideViewHeight;
 @property(nonatomic, strong) UIColor *slideViewColor;
@@ -37,6 +39,10 @@
 @property(nonatomic, weak) id <LJSlideTabViewDataSource> dataSource;
 
 - (instancetype)initWithFrame:(CGRect)frame andTabCount:(NSInteger)tabCount;
+
+/* 当所有的 TabItem 需要的空间超出一屏大小时，指定页面中同时可 TabItem 展示的数量 */
+- (instancetype)initWithFrame:(CGRect)frame TabCount:(NSInteger)tabCount displayTabCount:(NSInteger)displayTabCount;
+
 
 @end
 
