@@ -352,7 +352,7 @@ struct {
         _tabScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, _myFrame.size.width, _tabViewHeight)];
         _tabScrollView.contentSize = CGSizeMake(width * _tabCount, _tabViewHeight);
 
-        _tabScrollView.showsHorizontalScrollIndicator = YES;
+        _tabScrollView.showsHorizontalScrollIndicator = NO;
         _tabScrollView.showsVerticalScrollIndicator = NO;
         _tabScrollView.bounces = NO;
 

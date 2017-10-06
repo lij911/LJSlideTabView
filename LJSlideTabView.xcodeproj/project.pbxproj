@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F67B25E31F87A6A500F46A0A /* SecondDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F67B25E21F87A6A500F46A0A /* SecondDemoViewController.m */; };
 		F69D3A3D1F72587000B9720A /* FirstDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69D3A3C1F72587000B9720A /* FirstDemoViewController.m */; };
 		F69D3A411F725ABD00B9720A /* LJSlideTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = F69D3A3F1F725ABD00B9720A /* LJSlideTabView.m */; };
 		F6B7157E1F724F6B00F1FCFE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B7157D1F724F6B00F1FCFE /* AppDelegate.m */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F67B25E11F87A6A500F46A0A /* SecondDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondDemoViewController.h; sourceTree = "<group>"; };
+		F67B25E21F87A6A500F46A0A /* SecondDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondDemoViewController.m; sourceTree = "<group>"; };
 		F69D3A3B1F72587000B9720A /* FirstDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstDemoViewController.h; sourceTree = "<group>"; };
 		F69D3A3C1F72587000B9720A /* FirstDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstDemoViewController.m; sourceTree = "<group>"; };
 		F69D3A3F1F725ABD00B9720A /* LJSlideTabView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LJSlideTabView.m; sourceTree = "<group>"; };
@@ -108,6 +111,8 @@
 				F69D3A3F1F725ABD00B9720A /* LJSlideTabView.m */,
 				F69D3A3B1F72587000B9720A /* FirstDemoViewController.h */,
 				F69D3A3C1F72587000B9720A /* FirstDemoViewController.m */,
+				F67B25E11F87A6A500F46A0A /* SecondDemoViewController.h */,
+				F67B25E21F87A6A500F46A0A /* SecondDemoViewController.m */,
 				F6B715821F724F6B00F1FCFE /* Main.storyboard */,
 				F6B715851F724F6B00F1FCFE /* Assets.xcassets */,
 				F6B7158A1F724F6B00F1FCFE /* Info.plist */,
@@ -278,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F67B25E31F87A6A500F46A0A /* SecondDemoViewController.m in Sources */,
 				F69D3A411F725ABD00B9720A /* LJSlideTabView.m in Sources */,
 				F69D3A3D1F72587000B9720A /* FirstDemoViewController.m in Sources */,
 				F6B7158C1F724F6B00F1FCFE /* main.m in Sources */,

@@ -82,10 +82,10 @@
             </objects>
             <point key="canvasLocation" x="988" y="-534"/>
         </scene>
-        <!--View Controller-->
+        <!--Second Demo-->
         <scene sceneID="qXx-WA-gic">
             <objects>
-                <viewController id="cu6-kS-YYI" sceneMemberID="viewController">
+                <viewController title="Second Demo" id="cu6-kS-YYI" customClass="SecondDemoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OYP-YK-jWL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

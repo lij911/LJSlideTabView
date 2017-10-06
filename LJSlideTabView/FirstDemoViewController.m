@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _slideTabView = [[LJSlideTabView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64) andTabCount:10];
+    _slideTabView = [[LJSlideTabView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64) andTabCount:4];
     _slideTabView.delegate = self;
     _slideTabView.dataSource = self;
     [self.view addSubview:_slideTabView];
@@ -30,10 +30,10 @@
 }
 
 - (void)relayout {
-//    _slideTabView.tabViewHeight = 40;
-//    _slideTabView.tabItemFont = [UIFont systemFontOfSize:16];
-//    _slideTabView.slideViewColor = [UIColor grayColor];
-//    _slideTabView.tabItemTitles = @[@"133", @"233", @"333", @"433"];
+    _slideTabView.tabViewHeight = 40;
+    _slideTabView.tabItemFont = [UIFont systemFontOfSize:16];
+    _slideTabView.slideViewColor = [UIColor grayColor];
+    _slideTabView.tabItemTitles = @[@"133", @"233", @"333", @"433"];
     _slideTabView.slideViewScale = 1.0;
     //在设置好之后调用 setNeedsDisplay 触发drawRect: 方法
     [_slideTabView setNeedsDisplay];
