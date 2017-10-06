@@ -212,7 +212,7 @@ struct {
         [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
         btn = _tabItems[nextTabIndex];
         [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
-
+ 
         [UIView animateWithDuration:0.2L animations:^{
             CGFloat width = _myFrame.size.width / _displayTabCount;
             NSInteger baseNum = _tabScrollView.contentOffset.x / width;
@@ -220,21 +220,18 @@ struct {
                 baseNum = nextTabIndex;
                 if (baseNum > 0){
                     baseNum--;
+                    _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
                 }
-                _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
-                CGPoint center = _slideView.center;
-                center.x = btn.center.x;
-                _slideView.center = center;
             } else if (baseNum + _displayTabCount - 1 <= nextTabIndex){
                 baseNum = nextTabIndex - _displayTabCount + 1;
                 if(baseNum + _displayTabCount < _tabCount){
                     baseNum++;
+                    _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
                 }
-                _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
-                CGPoint center = _slideView.center;
-                center.x = btn.center.x;
-                _slideView.center = center;
             }
+            CGPoint center = _slideView.center;
+            center.x = (nextTabIndex + 0.5) * width;
+            _slideView.center = center;
         }];
 
         _currentTabIndex = nextTabIndex;
@@ -243,19 +240,15 @@ struct {
 
 }
 
-#pragma mark - Sync ScrollView
-
-
 #pragma mark - Action Response
 
 - (void)switchTabView:(UIButton *)sender {
-    if (labs(_currentTabIndex - sender.tag) < 2) {
-        [_mainScrollView setContentOffset:CGPointMake(sender.tag * _myFrame.size.width, 0) animated:YES];
-        [self switchTabWithNextTabIndex:sender.tag];
-    } else {
-        [_mainScrollView setContentOffset:CGPointMake(sender.tag * _myFrame.size.width, 0) animated:NO];
-        [self switchTabWithNextTabIndex:sender.tag];
-    }
+    [_mainScrollView setContentOffset:CGPointMake(sender.tag * _myFrame.size.width, 0) animated:NO];
+    CGFloat width = _myFrame.size.width / _displayTabCount;
+    CGPoint center = _slideView.center;
+    center.x = (_currentTabIndex + 0.5) * width;
+    _slideView.center = center;
+    [self switchTabWithNextTabIndex:sender.tag];
 }
 
 
