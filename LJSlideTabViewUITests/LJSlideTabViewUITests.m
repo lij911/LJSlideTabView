@@ -32,9 +32,36 @@
     [super tearDown];
 }
 
+
 - (void)testExample {
+    
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    [app.buttons[@"1.普通的Demo"] tap];
+    
+    [[[[[[[[[app.otherElements containingType:XCUIElementTypeNavigationBar identifier:@"First Demo"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeScrollView] elementBoundByIndex:1] childrenMatchingType:XCUIElementTypeScrollView].element swipeLeft];
+    
+    XCUIElementQuery *scrollViewsQuery = app.scrollViews;
+    XCUIElement *pageIndexIs1Element = [scrollViewsQuery.otherElements containingType:XCUIElementTypeStaticText identifier:@"page index is :1"].element;
+    [pageIndexIs1Element swipeLeft];
+    
+    XCUIElement *pageIndexIs2Element = [scrollViewsQuery.otherElements containingType:XCUIElementTypeStaticText identifier:@"page index is :2"].element;
+    [pageIndexIs2Element swipeLeft];
+    [[scrollViewsQuery.otherElements containingType:XCUIElementTypeStaticText identifier:@"page index is :3"].element swipeRight];
+    [pageIndexIs2Element swipeRight];
+    [pageIndexIs1Element swipeRight];
+    
+    XCUIElementQuery *buttonScrollViewsQuery = [app.scrollViews containingType:XCUIElementTypeButton identifier:@"Button"];
+    [[[[buttonScrollViewsQuery childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Button"] elementBoundByIndex:1] tap];
+    
+    XCUIElement *button = [[[buttonScrollViewsQuery childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Button"] elementBoundByIndex:2];
+    [button tap];
+    [[[[buttonScrollViewsQuery childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Button"] elementBoundByIndex:3] tap];
+    [[[[buttonScrollViewsQuery childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Button"] elementBoundByIndex:0] tap];
+    [button tap];
+    [app.navigationBars[@"First Demo"].buttons[@"Back"] tap];
     // Use recording to get started writing UI tests.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
 }
+
 
 @end

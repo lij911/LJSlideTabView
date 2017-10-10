@@ -206,36 +206,35 @@ struct {
             [_delegate slideTabView:self willShowDisplayView:nextTabIndex];
         }
 
-        [self setupDisplayViewAtTabIndex:nextTabIndex];
-
         UIButton *btn = _tabItems[_currentTabIndex];
         [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
         btn = _tabItems[nextTabIndex];
         [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
- 
-        [UIView animateWithDuration:0.2L animations:^{
+        //        dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.15L animations:^{
             CGFloat width = _myFrame.size.width / _displayTabCount;
             NSInteger baseNum = _tabScrollView.contentOffset.x / width;
             if (nextTabIndex <= baseNum){
                 baseNum = nextTabIndex;
                 if (baseNum > 0){
                     baseNum--;
-                    _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
                 }
+                _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
             } else if (baseNum + _displayTabCount - 1 <= nextTabIndex){
                 baseNum = nextTabIndex - _displayTabCount + 1;
                 if(baseNum + _displayTabCount < _tabCount){
                     baseNum++;
-                    _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
                 }
+                _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
             }
             CGPoint center = _slideView.center;
             center.x = (nextTabIndex + 0.5) * width;
             _slideView.center = center;
         }];
-
+        
+        [self setupDisplayViewAtTabIndex:nextTabIndex];
+        
         _currentTabIndex = nextTabIndex;
-
     }
 
 }
@@ -356,7 +355,7 @@ struct {
         _tabScrollView.showsVerticalScrollIndicator = NO;
         _tabScrollView.bounces = NO;
 
-        _tabScrollView.delegate = self;
+//        _tabScrollView.delegate = self;
     }
     return _tabScrollView;
 }

@@ -10,6 +10,8 @@
 		F67B25E31F87A6A500F46A0A /* SecondDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F67B25E21F87A6A500F46A0A /* SecondDemoViewController.m */; };
 		F69D3A3D1F72587000B9720A /* FirstDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F69D3A3C1F72587000B9720A /* FirstDemoViewController.m */; };
 		F69D3A411F725ABD00B9720A /* LJSlideTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = F69D3A3F1F725ABD00B9720A /* LJSlideTabView.m */; };
+		F6A5C26F1F8C976200BF84C3 /* FirstDemoUITest.m in Sources */ = {isa = PBXBuildFile; fileRef = F6A5C26E1F8C976200BF84C3 /* FirstDemoUITest.m */; };
+		F6A5C2711F8C979F00BF84C3 /* SecondDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F6A5C2701F8C979F00BF84C3 /* SecondDemoUITests.m */; };
 		F6B7157E1F724F6B00F1FCFE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B7157D1F724F6B00F1FCFE /* AppDelegate.m */; };
 		F6B715841F724F6B00F1FCFE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6B715821F724F6B00F1FCFE /* Main.storyboard */; };
 		F6B715861F724F6B00F1FCFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6B715851F724F6B00F1FCFE /* Assets.xcassets */; };
@@ -43,6 +45,8 @@
 		F69D3A3C1F72587000B9720A /* FirstDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstDemoViewController.m; sourceTree = "<group>"; };
 		F69D3A3F1F725ABD00B9720A /* LJSlideTabView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LJSlideTabView.m; sourceTree = "<group>"; };
 		F69D3A401F725ABD00B9720A /* LJSlideTabView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LJSlideTabView.h; sourceTree = "<group>"; };
+		F6A5C26E1F8C976200BF84C3 /* FirstDemoUITest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstDemoUITest.m; sourceTree = "<group>"; };
+		F6A5C2701F8C979F00BF84C3 /* SecondDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondDemoUITests.m; sourceTree = "<group>"; };
 		F6B715791F724F6B00F1FCFE /* LJSlideTabView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LJSlideTabView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B7157C1F724F6B00F1FCFE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F6B7157D1F724F6B00F1FCFE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 		F6B7159F1F724F6B00F1FCFE /* LJSlideTabViewUITests */ = {
 			isa = PBXGroup;
 			children = (
+				F6A5C2701F8C979F00BF84C3 /* SecondDemoUITests.m */,
+				F6A5C26E1F8C976200BF84C3 /* FirstDemoUITest.m */,
 				F6B715A01F724F6B00F1FCFE /* LJSlideTabViewUITests.m */,
 				F6B715A21F724F6B00F1FCFE /* Info.plist */,
 			);
@@ -303,7 +309,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6A5C2711F8C979F00BF84C3 /* SecondDemoUITests.m in Sources */,
 				F6B715A11F724F6B00F1FCFE /* LJSlideTabViewUITests.m in Sources */,
+				F6A5C26F1F8C976200BF84C3 /* FirstDemoUITest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
