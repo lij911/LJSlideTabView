@@ -1,7 +1,9 @@
 # LJSlideTabView
-实现顶部 Tab 功能
+实现顶部 Tab 功能, 支持 tab 特别数量多的情况
 
+![demo1](http://blog.glassysky.cn/wp-content/uploads/2017/10/Simulator-Screen-Shot-iPhone-8-2017-10-06-at-20.22.57.png)
 ![demo1](http://blog.glassysky.cn/wp-content/uploads/2017/09/Simulator-Screen-Shot-iPhone-8-2017-09-21-at-16.24.04.png)
+
 
 * 导入头文件
 ```
