@@ -198,7 +198,7 @@ struct {
 #pragma mark -
 
 
-- (void)switchTabWithNextTabIndex:(NSInteger)nextTabIndex {
+- (void)switchTabWithNextTabIndex:(NSInteger)nextTabIndex withClick:(BOOL) isClick{
 
     if (nextTabIndex != _currentTabIndex) {
 
@@ -210,7 +210,7 @@ struct {
         [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
         btn = _tabItems[nextTabIndex];
         [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
-        //        dispatch_async(dispatch_get_main_queue(), ^{
+        
         [UIView animateWithDuration:0.15L animations:^{
             CGFloat width = _myFrame.size.width / _displayTabCount;
             NSInteger baseNum = _tabScrollView.contentOffset.x / width;
@@ -227,9 +227,11 @@ struct {
                 }
                 _tabScrollView.contentOffset = CGPointMake(baseNum * width, 0);
             }
-            CGPoint center = _slideView.center;
-            center.x = (nextTabIndex + 0.5) * width;
-            _slideView.center = center;
+            if (isClick) {
+                CGPoint center = _slideView.center;
+                center.x = (nextTabIndex + 0.5) * width;
+                _slideView.center = center;
+            }
         }];
         
         [self setupDisplayViewAtTabIndex:nextTabIndex];
@@ -247,16 +249,19 @@ struct {
     CGPoint center = _slideView.center;
     center.x = (_currentTabIndex + 0.5) * width;
     _slideView.center = center;
-    [self switchTabWithNextTabIndex:sender.tag];
+    [self switchTabWithNextTabIndex:sender.tag withClick:YES];
 }
 
 
 #pragma mark - ScrollView Delegate
-
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+    [self scrollViewDidEndDecelerating:scrollView];
+}
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSInteger nextTabIndex = _mainScrollView.contentOffset.x / _myFrame.size.width;
-    [self switchTabWithNextTabIndex:nextTabIndex];
-
+    if (nextTabIndex != _currentTabIndex) {
+        [self switchTabWithNextTabIndex:nextTabIndex withClick:NO];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -290,7 +295,7 @@ struct {
 }
 
 - (void)setCurrentTabIndex:(NSInteger)currentTabIndex {
-    [self switchTabWithNextTabIndex:currentTabIndex];
+    [self switchTabWithNextTabIndex:currentTabIndex withClick:YES];
 }
 
 - (void)setTabItemTitles:(NSArray *)tabItemTitles {
