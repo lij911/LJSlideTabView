@@ -24,8 +24,9 @@
 @property(nonatomic, assign) CGFloat tabViewHeight;
 
 /* 顶部的 TabView 里每个 Item 的属性 */
-@property(nonatomic, strong) UIColor *tabItemColorDefault;
-@property(nonatomic, strong) UIColor *tabItemColorHighlight;
+@property(nonatomic, strong) UIColor *tabItemTextColorDefault;
+@property(nonatomic, strong) UIColor *tabItemTextColorHighlight;
+@property(nonatomic, strong) UIColor *tabItemBackGroudColor;
 @property(nonatomic, strong) UIFont *tabItemFont;
 @property(nonatomic, strong) NSArray *tabItemTitles;
 

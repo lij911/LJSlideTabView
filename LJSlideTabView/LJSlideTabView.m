@@ -84,8 +84,9 @@ struct {
         _disPlayViews = [NSMutableDictionary dictionary];
         _tabItemFont = [UIFont systemFontOfSize:14];
         _slideViewColor = [UIColor colorWithRed:239 / 256.0 green:154 / 256.0 blue:66 / 256.0 alpha:1];
-        _tabItemColorDefault = [UIColor colorWithRed:153 / 256.0 green:153 / 256.0 blue:153 / 256.0 alpha:1];
-        _tabItemColorHighlight = [UIColor colorWithRed:12 / 256.0 green:78 / 256.0 blue:159 / 256.0 alpha:1];
+        _tabItemTextColorDefault = [UIColor colorWithRed:153 / 256.0 green:153 / 256.0 blue:153 / 256.0 alpha:1];
+        _tabItemTextColorHighlight = [UIColor colorWithRed:12 / 256.0 green:78 / 256.0 blue:159 / 256.0 alpha:1];
+        _tabItemBackGroudColor = UIColor.whiteColor;
     }
     return self;
 }
@@ -110,10 +111,12 @@ struct {
     [_tabScrollView addSubview:self.slideView];
 
     // 对可能修改过的属性重新赋值
+    
     _slideView.backgroundColor = _slideViewColor;
     _slideView.frame = CGRectMake(width * (_currentTabIndex + (1 - _slideViewScale) / 2), _tabViewHeight - _slideViewHeight, width * _slideViewScale, _slideViewHeight);
     _tabScrollView.frame = CGRectMake(0, 0, _myFrame.size.width, _tabViewHeight);
-
+    _tabScrollView.backgroundColor = _tabItemBackGroudColor;
+    
     //
     if (!_tabItems) {
         [self setupTabItems];
@@ -144,9 +147,9 @@ struct {
             [btn setTitle:@"Button" forState:UIControlStateNormal];
         }
         if (i == _currentTabIndex) {
-            [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
+            [btn setTitleColor:_tabItemTextColorHighlight forState:UIControlStateNormal];
         } else {
-            [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
+            [btn setTitleColor:_tabItemTextColorDefault forState:UIControlStateNormal];
         }
         [btn addTarget:self action:@selector(switchTabView:) forControlEvents:UIControlEventTouchUpInside];
         [_tabItems addObject:btn];
@@ -163,9 +166,9 @@ struct {
         btn.titleLabel.font = _tabItemFont;
         [btn setTitle:_tabItemTitles[idx] forState:UIControlStateNormal];
         if (idx == _currentTabIndex) {
-            [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
+            [btn setTitleColor:_tabItemTextColorHighlight forState:UIControlStateNormal];
         } else {
-            [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
+            [btn setTitleColor:_tabItemTextColorDefault forState:UIControlStateNormal];
         }
     }];
 }
@@ -207,9 +210,9 @@ struct {
         }
 
         UIButton *btn = _tabItems[_currentTabIndex];
-        [btn setTitleColor:_tabItemColorDefault forState:UIControlStateNormal];
+        [btn setTitleColor:_tabItemTextColorDefault forState:UIControlStateNormal];
         btn = _tabItems[nextTabIndex];
-        [btn setTitleColor:_tabItemColorHighlight forState:UIControlStateNormal];
+        [btn setTitleColor:_tabItemTextColorHighlight forState:UIControlStateNormal];
         
         [UIView animateWithDuration:0.15L animations:^{
             CGFloat width = _myFrame.size.width / _displayTabCount;
@@ -304,13 +307,13 @@ struct {
     _layoutFlags.needLayoutTabItems = true;
 }
 
-- (void)setTabItemColorHighlight:(UIColor *)tabItemColorHighlight {
-    _tabItemColorHighlight = tabItemColorHighlight;
+- (void)setTabItemTextColorHighlight:(UIColor *)tabItemColorHighlight {
+    _tabItemTextColorHighlight = tabItemColorHighlight;
     _layoutFlags.needLayoutTabItems = true;
 }
 
-- (void)setTabItemColorDefault:(UIColor *)tabItemColorDefault {
-    _tabItemColorDefault = tabItemColorDefault;
+- (void)setTabItemTextColorDefault:(UIColor *)tabItemColorDefault {
+    _tabItemTextColorDefault = tabItemColorDefault;
     _layoutFlags.needLayoutTabItems = true;
 }
 
@@ -323,6 +326,12 @@ struct {
     _tabViewHeight = tabViewHeight;
     _layoutFlags.needLayoutDisplayView = true;
 }
+
+-(void)setTabItemBackGroudColor:(UIColor *)tabItemBackGroudColorDefault{
+    _tabItemBackGroudColor = tabItemBackGroudColorDefault;
+    _layoutFlags.needLayoutDisplayView = true;
+}
+
 
 #pragma mark - lazy init
 
