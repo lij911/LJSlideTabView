@@ -18,9 +18,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _slideTabView = [[LJSlideTabView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64) andTabCount:10];
+    
+    NSArray *titles = @[@"要闻",@"推荐",@"滚动",@"机会",@"同顺号",@"自选",@"大盘",@"操盘必读"];
+    
+    _slideTabView = [[LJSlideTabView alloc] initWithFrame:CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64) andTabCount:titles.count];
+    _slideTabView.tabItemTitles = titles;
     _slideTabView.dataSource = self;
+    
+    _slideTabView.tabViewHeight = 50;
+    _slideTabView.tabItemBackGroudColor = UIColor.redColor;
+    _slideTabView.slideViewColor = UIColor.whiteColor;
+    _slideTabView.tabItemTextColorDefault = UIColor.whiteColor;
+    _slideTabView.tabItemTextColorHighlight = UIColor.whiteColor;
+    _slideTabView.tabItemFont = [UIFont systemFontOfSize:14.0f];
     [self.view addSubview:_slideTabView];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+
 }
 
 - (void)didReceiveMemoryWarning {
